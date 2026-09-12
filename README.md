@@ -4,29 +4,30 @@ SQL-driven analysis of H&M sales performance, customer behaviour, product and ch
 
 ## Project Overview
 
-This project analyzes H&M transaction data to understand business performance from both **commercial and customer perspectives**.
+This project uses H&M transaction data to understand the business from both a sales and customer perspective.
 
-The analysis begins with overall transaction and sales trends, then moves into channel, product, and department performance before examining customer participation, purchasing behaviour, customer value, recency, inactivity, and repeat purchasing patterns. The final stages use RFM segmentation and SQL window functions to identify more meaningful customer and product-level patterns.
+I started with the overall sales picture and then moved into channels, products, and departments. From there, I looked more closely at customers — their purchasing behaviour, historical value, recency, inactivity, repeat purchases, and RFM segments.
 
-The objective is to move beyond individual metrics and build a connected view of **how sales are performing, how customers are behaving, where value is concentrated, and where potential opportunities for improvement exist**.
+The aim was to connect these areas and understand where transaction value comes from, how customers behave over time, and where there may be opportunities to improve customer engagement and retention.
 
 ## Objectives
-- Analyze overall transaction volume, transaction value, and average transaction value.
-- Evaluate sales performance across different time periods, including monthly, year-over-year, and month-over-month changes.
-- Compare Online and Store channels based on transaction activity and value contribution.
-- Identify high-performing product groups, departments, and products within departments.
-- Understand customer participation and distinguish one-time customers from repeat customers.
-- Compare customer value across different purchasing behaviours.
-- Analyze customer recency, inactivity, and purchase gaps to identify retention-related patterns.
-- Identify high-value customers who may represent important reactivation opportunities.
-- Segment customers using RFM analysis based on recency, frequency, and monetary value.
-- Examine customer behaviour across sales channels and identify within-group rankings using SQL window functions.
-- 
+
+- Analyze transaction volume, transaction value, and average transaction value.
+- Understand how sales performance changes over time.
+- Compare Online and Store channel performance.
+- Identify high-performing product groups, departments, and products.
+- Understand customer participation and purchasing behaviour.
+- Compare one-time and repeat customers by historical value.
+- Analyze recency, inactivity, and purchase gaps.
+- Identify previously repeat customers who may be relevant for reactivation.
+- Segment customers using RFM analysis.
+- Use SQL window functions for customer and product-level comparisons.
+
 ## Dataset & Scope
 
-This project uses H&M transaction, customer, and article-level data to analyze sales performance, customer behaviour, product and channel performance, customer value, and retention patterns.
+The project uses H&M transaction, customer, and article-level data.
 
-The analysis covers transaction activity, time trends, sales channels, products and departments, customer purchasing behaviour, inactivity, RFM segmentation, and purchase gaps.
+The analysis covers sales activity, time trends, sales channels, products and departments, customer behaviour, customer value, inactivity, RFM segmentation, and purchase gaps.
 
 ### Analytical Assumption
 
@@ -46,77 +47,90 @@ The transaction data does not contain a unique basket or order ID. Therefore, di
 
 4. How does purchasing behaviour differ between one-time and repeat customers?
 
-5. What patterns in customer recency, inactivity, and purchase gaps indicate potential retention opportunities?
+5. What do customer recency, inactivity, and purchase gaps indicate about retention opportunities?
 
 6. How can RFM segmentation help identify differences in customer value and engagement?
 
 ## Key Insights
 
-### 1. The decline in 2020 was driven more by lower transaction activity than by a major change in transaction value
+### 1. The 2020 decline was mainly associated with lower transaction activity
 
-Transaction value increased from 1,312.05 in 2018 to 4,551.02 in 2019, before declining by 34.56% to 2,978.37 in 2020. Transaction volume followed a similar pattern, falling from 163,969 transactions in 2019 to 109,802 in 2020.
+Transaction value increased from 1,312.05 in 2018 to 4,551.02 in 2019, before falling by 34.56% to 2,978.37 in 2020. Transaction volume also fell from 163,969 in 2019 to 109,802 in 2020.
 
-In comparison, average transaction value declined only slightly from 0.027755 in 2019 to 0.027125 in 2020. This suggests that the reduction in overall transaction value was more closely associated with lower transaction activity than with a major decline in the value of individual transactions.
+Average transaction value changed only slightly, from 0.027755 in 2019 to 0.027125 in 2020. This suggests that the fall in overall transaction value was more closely related to lower transaction activity than to a large change in transaction value per purchase.
 
-*Note: 2018 and 2020 are partial years in the dataset, so year-over-year comparisons should be interpreted in that context.*
+*Note: 2018 and 2020 are partial years in the dataset, so these yearly comparisons should be viewed in that context.*
 
-### 2. Store is the dominant sales channel, while Online contributes a meaningful secondary share
+### 2. Store is the main transaction channel in the dataset
 
 Store generated 224,184 transactions and 6,689.73 in transaction value, compared with 93,699 transactions and 2,151.71 Online.
 
-Store therefore contributed 70.52% of transaction volume and 75.66% of total transaction value, while Online contributed 29.48% and 24.34%, respectively. The higher share of transaction value relative to volume also indicates that the Store channel had a higher average transaction value in the observed data.
+Store accounted for 70.52% of transaction volume and 75.66% of total transaction value, while Online accounted for 29.48% and 24.34%.
 
-### 3. Core apparel categories account for a large share of transaction value across both channels
+The fact that Store's value share is higher than its transaction share also indicates a higher average transaction value in the observed data.
 
-Garment Upper Body was the leading product group in both Online and Store channels, followed by Garment Lower Body and Garment Full Body.
+### 3. Product performance changes depending on whether we look at volume or value
 
-Together, these three product groups contributed approximately 79% of transaction value within each channel. The consistency across channels suggests that core apparel categories are important drivers of transaction value regardless of where the purchase takes place.
+The department analysis shows that transaction volume and transaction value do not always point to the same categories. Swimwear recorded the highest transaction count among the listed departments at 24,867, while Trouser generated the highest transaction value at 609.79 with 17,603 transactions.
 
-### 4. Product performance differs when measured by volume versus value
+Outwear had only 3,887 transactions but recorded the highest average transaction value among the listed departments at 0.080564.
 
-The department analysis highlights an important difference between transaction volume and transaction value. Swimwear recorded the highest transaction count among the listed departments at 24,867, while Trouser generated the highest transaction value at 609.79 despite having fewer transactions at 17,603.
+At the broader product-group level, Garment Upper Body, Garment Lower Body, and Garment Full Body were the top three groups in both Online and Store. Together, they accounted for roughly 79% of transaction value within each channel.
 
-Outwear showed an even stronger value-versus-volume contrast, with only 3,887 transactions but the highest average transaction value among the listed departments at 0.080564.
+### 4. One-time customers form most of the customer base, but repeat customers are much more valuable
 
-This indicates that category performance should be evaluated using both demand volume and transaction value rather than relying on transaction count alone.
+The analysis identified 179,519 one-time customers compared with 55,298 repeat customers. One-time customers therefore made up approximately 76.45% of purchasing customers.
 
-### 5. One-time customers dominate the customer base, but repeat customers have substantially higher historical value
+However, average historical customer value was 0.027286 for one-time customers compared with 0.071306 for repeat customers — around 2.6 times higher.
 
-The analysis identified 179,519 one-time customers compared with 55,298 repeat customers. One-time customers therefore represented approximately 76.45% of purchasing customers.
+This makes repeat-purchase conversion an important customer-value opportunity in the observed data.
 
-However, average historical customer value was 0.027286 for one-time customers versus 0.071306 for repeat customers—around 2.6 times higher for repeat customers.
+### 5. A large inactive customer group includes customers who had already returned before
 
-This creates an important customer-value pattern: although repeat customers represent a smaller share of the customer base, their observed historical value is substantially higher. Increasing movement from an initial purchase to subsequent purchases therefore represents a meaningful customer-value opportunity.
-
-### 6. Retention and customer segmentation reveal clear groups for differentiated attention
-
-The recency analysis found 161,792 customers inactive for more than 181 days, representing approximately 68.90% of customers in the recency analysis. More importantly, 29,487 customers who had previously purchased more than once were also inactive for more than 180 days.
+161,792 customers had been inactive for more than 181 days. More importantly, 29,487 customers who had previously purchased more than once were also inactive for more than 180 days.
 
 These inactive repeat customers had a combined historical transaction value of 1,980.41 and an average historical customer value of 0.067162.
 
-The RFM analysis adds another layer of prioritization: 27,863 customers were classified as Champions and contributed 26.18% of total customer value, while 92,121 customers were classified as At Risk and contributed 32.34% of total customer value.
+Because these customers had already shown repeat purchasing behaviour, they provide a more relevant group to examine for reactivation than treating all inactive customers in the same way.
 
-Together, these findings suggest that customer management should not follow a one-size-fits-all approach. High-value engaged customers need to be protected, while previously valuable inactive customers and larger At Risk groups can be considered for targeted reactivation and retention efforts.
+The average gap between observed customer purchase occasions was also approximately 180 days, which provides useful context when interpreting inactivity.
 
+### 6. RFM segmentation shows that customer value is spread unevenly across the customer base
+
+The RFM analysis classified 27,863 customers as Champions, 92,121 as At Risk, 108,623 as Developing, 4,403 as Loyal / Active, and 1,807 as Dormant.
+
+Champions represented about 11.87% of the segmented customer base but contributed 26.18% of total customer value. At Risk customers represented about 39.23% of the segmented base and contributed 32.34% of total customer value.
+
+This suggests that different customer groups need different levels of attention: high-value customers are worth protecting, while larger At Risk and Developing groups may offer opportunities for stronger engagement.
 
 ## Recommendations
 
-- **Improve repeat-purchase conversion:** Since one-time customers make up the majority of the purchasing base while repeat customers show substantially higher historical value, increasing movement from a first purchase to subsequent purchases could be a meaningful customer-value opportunity.
+- **Improve repeat-purchase conversion:** One-time customers make up the majority of the purchasing base, while repeat customers have much higher historical value. Encouraging a second purchase could therefore be an important customer-value opportunity.
 
-- **Prioritize reactivation opportunities:** The inactive repeat-customer group can be segmented further using recency and historical value, allowing attention to be focused on customers who have previously demonstrated repeat purchasing behaviour.
+- **Prioritize reactivation opportunities:** Inactive repeat customers can be further prioritized using recency and historical value, rather than treating every inactive customer in the same way.
 
-- **Protect high-value customers:** Champions contribute a disproportionately high share of customer value, making continued engagement with this segment an important area for retention efforts.
+- **Protect high-value customers:** Champions contribute a relatively large share of total customer value, making continued engagement with this group important.
 
-- **Evaluate product performance through both volume and value:** High transaction volume does not always translate into the highest transaction value. Reviewing both measures together can provide a more balanced view of category performance.
+- **Evaluate categories using both volume and value:** Transaction count alone does not always identify the strongest-value categories, so both measures should be considered when reviewing product performance.
 
-- **Use channel behaviour as an additional customer lens:** Since Store accounts for the larger share of transaction value, comparing single-channel and multi-channel customers by historical value can help identify differences in customer behaviour that may be useful for future channel-focused analysis.
+- **Use channel behaviour as an additional customer lens:** Store contributes the larger share of transaction value, while customer-level channel behaviour can be examined alongside historical value to better understand single-channel and multi-channel customers.
 
-- ## Limitations & Assumptions
+## Limitations & Assumptions
 
 - The dataset does not contain a unique basket or order identifier. Distinct customer purchase dates are therefore used as a practical proxy for purchase occasions when analyzing purchase frequency and purchase gaps.
 
-- Customer inactivity is measured relative to 22 September 2020, the reference date used in the analysis. A customer classified as inactive should not automatically be interpreted as permanently churned.
+- Customer inactivity is measured relative to 22 September 2020, the reference date used in the analysis. Inactivity should not automatically be interpreted as permanent churn.
 
-- Historical customer value reflects past transaction activity and should not be treated as a forecast of future revenue.
+- Historical customer value represents past transaction activity and should not be treated as a forecast of future revenue.
 
-- The analysis is descriptive and identifies patterns and potential opportunities; it does not establish causal relationships between customer behaviour and sales outcomes.
+- The analysis is descriptive. It identifies patterns and potential opportunities, but does not establish causal relationships between customer behaviour and sales outcomes.
+
+## Conclusion
+
+This project looks at H&M from several connected angles — sales, products, channels, and customers — rather than focusing on a single metric.
+
+The analysis shows a strong contribution from the Store channel, concentration of transaction value in core product groups, and an important difference between transaction volume and transaction value across categories. At the customer level, one-time buyers make up most of the purchasing base, while repeat customers show much higher historical value.
+
+The retention analysis adds another layer: a large inactive customer base includes customers who had previously purchased more than once, while the RFM analysis shows that customer value and engagement vary considerably across segments.
+
+Taken together, the findings suggest that looking at sales performance alongside customer behaviour gives a more useful picture of the business. Areas such as repeat-purchase conversion, customer reactivation, high-value customer engagement, and product performance by value can be explored further using the patterns identified in the data.
