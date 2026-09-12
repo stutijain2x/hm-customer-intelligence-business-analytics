@@ -3,12 +3,11 @@
 SQL-driven analysis of H&M sales performance, customer behaviour, product and channel performance, customer value, segmentation, and retention patterns.
 
 ## Project Overview
-
 This project uses H&M transaction data to understand the business from both a sales and customer perspective.
 
-I started with the overall sales picture and then moved into channels, products, and departments. From there, I looked more closely at customers — their purchasing behaviour, historical value, recency, inactivity, repeat purchases, and RFM segments.
+I started with overall sales and transaction trends, then looked at channels, products, and departments. I then moved to customer-level analysis, covering purchasing behaviour, customer value, recency, inactivity, repeat purchases, and RFM segments.
 
-The aim was to connect these areas and understand where transaction value comes from, how customers behave over time, and where there may be opportunities to improve customer engagement and retention.
+The aim was to connect these areas and understand where transaction value comes from, how customers behave over time, and where there are potential opportunities to improve customer engagement and retention.
 
 ## Objectives
 
